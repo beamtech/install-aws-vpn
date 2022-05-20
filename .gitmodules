@@ -1,0 +1,6 @@
+[submodule "resources/beam-icon"]
+	path = resources/beam-icon
+	url = git@github.com:aaron-sowards/beam-icon.git
+[submodule "lib/MDM-Shell-Functions"]
+	path = lib/MDM-Shell-Functions
+	url = git@github.com:aaron-sowards/MDM-Shell-Functions.git

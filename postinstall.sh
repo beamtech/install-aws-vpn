@@ -19,13 +19,19 @@ connectionprofiles='{"Version":"1","LastSelectedProfileIndex":2,"ConnectionProfi
 i=0
 for f in *.ovpn
 do
+	# Remove .ovpn file extension
 	filename="$(echo $f | cut -d '.' -f1)"
 	filepath="$aws_ovpn_dir/$filename"
 	mv $f $filename
+	
+	# Strip auth-federate from openvpn configuation.
+	awk '!/auth-federate/' $filename > temp && mv temp $filename
+
+	# Build ConnectionProfiles configuration.
 	remote=$( grep "remote " $filename | awk 'BEGIN { FS = " " }; { print $2 }' )
 	e_id=$( echo $remote | awk 'BEGIN { FS = "." }; { print $1 }' )
 	e_region=$( echo $remote | awk 'BEGIN { FS = "." }; { print $4 }' )
-	connectionprofiles="$connectionprofiles{\"ProfileName:\":\"$filename\",\"OvpnConfigFilePath\":\"$filepath\",\"CvpnEndpointId\":\"$e_id\",\"CvpnEndpointRegion\":\"$e_region\",\"CompatibilityVersion\":\"2\",\"FederatedAuthType\":1}"
+	connectionprofiles="$connectionprofiles{\"ProfileName\":\"$filename\",\"OvpnConfigFilePath\":\"$filepath\",\"CvpnEndpointId\":\"$e_id\",\"CvpnEndpointRegion\":\"$e_region\",\"CompatibilityVersion\":\"2\",\"FederatedAuthType\":1}"
 	if [[ $i -lt $( expr $total_profiles - 1 ) ]]
 	then
 		connectionprofiles="$connectionprofiles,"
@@ -34,5 +40,5 @@ do
 done
 connectionprofiles="$connectionprofiles]}"
 
-echo $connectionprofiles > $aws_config_dir/ConnectionProfiles
+echo -e "$connectionprofiles" > $aws_config_dir/ConnectionProfiles
 chown -hR "$currentUser":staff "$aws_config_dir"

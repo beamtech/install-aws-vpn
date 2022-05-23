@@ -101,7 +101,7 @@ exit 0
 EOF
 chmod +x "$APP_PATH"/Contents/Scripts/postinstall 
 
-echo "Buidling package"
+echo "Building package"
 pkgbuild --scripts "$APP_PATH"/Contents/Scripts --install-location /Applications  --component "$APP_PATH" ./${BUILD}.pkg
 productbuild --synthesize --package ${BUILD}.pkg /Applications --version $VERSION ./dist.xml
 productbuild --distribution dist.xml --version $VERSION --package-path ./${BUILD}.pkg ./${BUILD}-final.pkg

@@ -17,5 +17,3 @@ installer -pkg /var/tmp/awsvpnclient.pkg -target /Applications
 
 echo "Installation complete, cleaning up..."
 rm -rf $pkg_location
-
-open -a "AWS VPN Client"

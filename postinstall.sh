@@ -20,7 +20,7 @@ i=0
 for f in *.ovpn
 do
 	# Add inactive flag to timeout after 10-minutes
-	echo -e "\ninactive 600 2000000" >> $f
+	echo -e "\ninactive 3600 100000" >> $f
 	# Remove .ovpn file extension
 	filename="$(echo $f | cut -d '.' -f1)"
 	filepath="$aws_ovpn_dir/$filename"
